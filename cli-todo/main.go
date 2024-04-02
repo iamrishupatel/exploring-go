@@ -37,16 +37,17 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Welcome to the Todo App!")
+	fmt.Println("Welcome to the Todo CLI")
 
 	for {
-
 		file, err := os.OpenFile("data/todo.csv", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 
 		if err != nil {
 			fmt.Println("Error reading file", err)
 			break
 		}
+
+		defer file.Close()
 
 		var operation string
 		var id int
@@ -60,31 +61,35 @@ func main() {
 		}
 
 		switch operation {
+
 		case "l", "list":
 			printTodos(getTodoFromFile(file))
 			fmt.Println("\n >>>> Operation Complete <<<<\n ")
-			file.Close()
 
 		case "a", "add":
 			addTodoToFile(file)
-			file.Close()
+			fmt.Println("\n >>>> Operation Complete <<<<\n ")
 
 		case "r", "remove":
-			fmt.Println("Which todo to remove.")
+			fmt.Println("Which todo to remove?")
 			fmt.Scanf("%d", &id)
 			updateTodo(file, "d", id)
 			file.Close()
 			renameFile()
+			fmt.Println("\n >>>> Operation Complete <<<<\n ")
+
 		case "u", "update":
-			fmt.Println("Which todo to update.")
+			fmt.Println("Which todo to update?")
 			fmt.Scanf("%d", &id)
 
-			fmt.Println("Choose an action c for marking complete, i for incomplete")
-
+			fmt.Println("Choose an action c for marking complete, i for incomplete.")
 			fmt.Scanf("%s", &action)
+
 			updateTodo(file, action, id)
 			file.Close()
 			renameFile()
+			fmt.Println("\n >>>> Operation Complete <<<<\n ")
+
 		default:
 			file.Close()
 			fmt.Println("\n >>>> Unknown Operation <<<<\n ")
