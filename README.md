@@ -28,5 +28,5 @@ This repository contains some simple projects built for learning and practice pu
       ```bash
       ./crypto-masters
       ```
-    - It shoud print rates of some currencies from the cex api.
+    - It should print rates of some currencies from the cex api.
     
